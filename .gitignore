@@ -1,0 +1,9 @@
+*
+
+!.gitignore
+!nvim/
+!nvim/**
+
+**/.DS_Store
+**/*.tmp
+**/*.log

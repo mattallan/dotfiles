@@ -14,8 +14,29 @@ vim.keymap.set('i', ',,', '<Esc>A,<Esc>')
 
 -- Claude Code in a centred float, toggled with <leader>cc (or <C-q> from inside it).
 -- The terminal is hidden rather than closed, so the conversation survives a toggle.
--- `cc nvim` is my zsh function: it resumes the session named "nvim" for this directory.
+-- Each directory gets one session named "nvim" with permission checks bypassed: the
+-- first toggle starts it, later ones (even after restarting nvim) resume it.
 local claude = { buf = nil, win = nil }
+
+-- A stable session ID for the current directory, so its session can be found and
+-- resumed without relying on a name lookup.
+local function claude_session_id()
+  local h = vim.fn.sha256('nvim:' .. vim.fn.getcwd())
+  return string.format('%s-%s-5%s-8%s-%s', h:sub(1, 8), h:sub(9, 12), h:sub(14, 16), h:sub(18, 20), h:sub(21, 32))
+end
+
+local function claude_cmd()
+  local id = claude_session_id()
+  local config_dir = vim.env.CLAUDE_CONFIG_DIR or (vim.env.HOME .. '/.claude')
+  local exists = vim.fn.glob(config_dir .. '/projects/*/' .. id .. '.jsonl') ~= ''
+  local cmd = { 'claude', '--dangerously-skip-permissions' }
+  if exists then
+    vim.list_extend(cmd, { '--resume', id })
+  else
+    vim.list_extend(cmd, { '--session-id', id, '--name', 'nvim' })
+  end
+  return cmd
+end
 
 local function open_claude_window()
   local width = math.floor(vim.o.columns * 0.8)
@@ -48,7 +69,7 @@ local function toggle_claude()
 
   claude.buf = vim.api.nvim_create_buf(false, true)
   open_claude_window()
-  vim.fn.jobstart({ 'zsh', '-ic', 'cc nvim' }, {
+  vim.fn.jobstart(claude_cmd(), {
     term = true,
     on_exit = function()
       if claude.win and vim.api.nvim_win_is_valid(claude.win) then

@@ -1,0 +1,67 @@
+onboarding = false
+[ui.sound]
+enabled = true
+
+[ui]
+agent_panel_sort = "priority"
+# Room for tab names like "dev environment" without truncating.
+sidebar_max_width = 40
+pane_scrollbars = false
+
+[ui.toast]
+delivery = "herdr"
+
+[theme]
+name = "terminal"
+auto_switch = false
+
+# Sidebar agent labels render overlay0 + Modifier::DIM, so the token has to be lifted
+# well above normal to stay legible through DIM. Unfocused pane borders share it.
+[theme.custom]
+overlay0 = "#a9b1d6"
+# Active tab: text is drawn in panel_bg on accent. With panel_bg unset it falls back to
+# surface_dim (ANSI black, grey in GitHub Dark), which washes out on blue.
+panel_bg = "#0d1117"
+accent = "#5a8ac6"
+
+[keys]
+# Trying backtick as the prefix (default is ctrl+b). Ctrl is an awkward reach on the
+# Mac bottom row. Press it twice to type a literal backtick.
+prefix = "`"
+
+# Toggle the reviewr pane. Needs a workspace rooted in a git worktree.
+[[keys.command]]
+key = "cmd+r"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+
+# Toggle the file viewer in a split beside the current pane (shift for its own tab).
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer"
+
+[[keys.command]]
+key = "prefix+shift+f"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer-tab"
+
+# nvim sidebar (persistent per tab) and a picker over the files the agent touched.
+[[keys.command]]
+key = "prefix+e"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.toggle"
+
+[[keys.command]]
+key = "prefix+o"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.pick-file"
+
+# Branch name dropped from the sidebar: it's the same prefix on every space, so it
+# was pure noise. git_status moves inline so the ahead-count signal survives.
+[ui.sidebar.spaces]
+rows = [["state_icon", "workspace", "git_status"]]
+
+# One line per agent: every agent is claude, so the second "claude" row was noise.
+[ui.sidebar.agents]
+rows = [["state_icon", "workspace", "tab"]]

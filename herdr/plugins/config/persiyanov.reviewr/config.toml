@@ -1,0 +1,9 @@
+# catppuccin is hand-specified rather than derived, so its cursor row (#585b70) clears the
+# added-line fill (#1f3a2a) at 1.85 contrast vs tokyo-night's 1.01. Base is near-identical
+# to the terminal's TokyoNight background, so nothing looks out of place.
+theme = "catppuccin"
+toggle_placement = "tab"
+default_scope = "branch"
+# tc-portal is Gitflow: branches are cut from dev, so a main base folds in every
+# unreleased dev commit. First candidate that resolves wins, so dev leads.
+base_branches = ["dev", "staging", "main", "master"]

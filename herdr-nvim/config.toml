@@ -1,0 +1,3 @@
+[sidebar]
+# nvim is only a zsh alias here, which herdr's subprocesses never see.
+nvim_bin = "/Users/matthewa/nvim-macos-arm64/bin/nvim"

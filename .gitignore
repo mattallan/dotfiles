@@ -3,7 +3,20 @@
 !.gitignore
 !nvim/
 !nvim/**
+!ghostty/
+!ghostty/**
+!herdr-nvim/
+!herdr-nvim/**
+
+# herdr: config only, not session state, logs, sockets or downloaded plugin sources
+!herdr/
+!herdr/config.toml
+!herdr/plugins.json
+!herdr/plugins/
+!herdr/plugins/config/
+!herdr/plugins/config/**
 
 **/.DS_Store
 **/*.tmp
 **/*.log
+**/.claude/

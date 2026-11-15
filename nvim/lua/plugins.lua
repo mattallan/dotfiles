@@ -20,4 +20,5 @@ require("plugins.snacks")
 require("plugins.herdr-nvim")
 
 -- Themes
-require("themes.tokyonight")
+-- require("themes.tokyonight")
+require("themes.solarized-osaka")
